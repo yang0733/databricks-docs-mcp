@@ -41,6 +41,14 @@ chmod +x start_server.sh
 ./start_server.sh
 ```
 
+**⏱️ Initial Setup Time Expectations:**
+- **First-time crawl**: ~5-7 minutes (3,181 pages with fast async crawler)
+- **Embedding generation**: ~10-15 minutes (creating vector embeddings for all pages)
+- **Total first run**: ~15-22 minutes
+- **Subsequent starts**: ~5-10 seconds (uses cached data)
+
+The server will automatically crawl and index documentation on first run. Grab a coffee! ☕
+
 ### Manual Installation
 
 ```bash
@@ -54,13 +62,15 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 # Install dependencies
 uv pip install -r requirements.txt
 
-# Crawl documentation (fast mode)
+# Crawl documentation (fast mode) - Takes ~5-7 minutes
 export PYTHONPATH="/path/to/parent/directory:$PYTHONPATH"
 python -m databricks_docs_mcp crawl --fast
 
-# Start MCP server
+# Start MCP server (first start: ~10-15 min for indexing, subsequent: ~5-10 sec)
 python server.py --no-scheduler
 ```
+
+> **💡 Tip**: The `--fast` flag uses the async crawler for 5-10x faster crawling. The server automatically creates embeddings on first startup.
 
 ## 📖 Usage
 
@@ -226,7 +236,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Open an [issue](https://github.com/YOUR-USERNAME/databricks-docs-mcp/issues)
 - Check [existing discussions](https://github.com/YOUR-USERNAME/databricks-docs-mcp/discussions)
-
----
-
-**Note**: This is an unofficial tool and is not affiliated with Databricks Inc.
