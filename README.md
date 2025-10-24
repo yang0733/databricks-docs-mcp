@@ -6,6 +6,8 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastMCP](https://img.shields.io/badge/FastMCP-2.0-green.svg)](https://github.com/jlowin/fastmcp)
 
+> **⚠️ DISCLAIMER**: This is **NOT** an official Databricks product and is **NOT** supported by Databricks. This is a community project that crawls and indexes publicly available Databricks documentation to provide MCP integration. Use at your own risk. For official Databricks support, please contact Databricks directly.
+
 This MCP server provides AI assistants like Claude, GPT-4, and others with semantic search access to the complete Databricks AWS documentation (~3,200 pages). It crawls, caches, indexes, and serves documentation through both MCP tools and resources.
 
 ## ✨ Features
