@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Databricks
+.databricks/
+*.log
+mcp_server.log
+docs_mcp_server.log
+server_output.log
+crawl.log
+
+# ChromaDB
+storage/chromadb/
+
+# Environment
+.env
+.env.local
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+backup_*/
+.tmp/
+tmp/
+
+# Downloaded content (large files)
+storage/data/pages/
+storage/data/index.json

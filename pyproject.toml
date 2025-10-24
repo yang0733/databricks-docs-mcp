@@ -1,0 +1,70 @@
+[project]
+name = "databricks-docs-mcp"
+version = "1.0.0"
+description = "MCP Server for Databricks AWS Documentation with semantic search, browsing, and recommendations"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {name = "Databricks Docs MCP Team"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "fastmcp>=0.2.0",
+    "beautifulsoup4>=4.12.0",
+    "chromadb>=0.4.0",
+    "sentence-transformers>=2.2.0",
+    "markdownify>=0.11.0",
+    "httpx>=0.25.0",
+    "pydantic>=2.0.0",
+    "APScheduler>=3.10.0",
+    "lxml>=4.9.0",
+    "uvicorn>=0.24.0",
+    "requests>=2.31.0",
+    "python-dateutil>=2.8.0",
+]
+
+[project.scripts]
+databricks-docs-mcp = "databricks_docs_mcp.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]
+
