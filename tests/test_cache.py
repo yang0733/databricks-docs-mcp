@@ -6,8 +6,8 @@ from pathlib import Path
 import tempfile
 import shutil
 
-from storage.cache import DocCache
-from storage.models import DocPage, DocSection
+from databricks_docs_mcp.storage.cache import DocCache
+from databricks_docs_mcp.storage.models import DocPage, DocSection
 
 
 class TestDocCache:

@@ -3,7 +3,7 @@
 import pytest
 from bs4 import BeautifulSoup
 
-from crawler.parser import DocParser
+from databricks_docs_mcp.crawler.parser import DocParser
 
 
 class TestDocParser:

@@ -2,8 +2,8 @@
 
 import pytest
 
-from embeddings.embedder import DocumentEmbedder
-from storage.models import DocPage, DocSection
+from databricks_docs_mcp.embeddings.embedder import DocumentEmbedder
+from databricks_docs_mcp.storage.models import DocPage, DocSection
 
 
 class TestDocumentEmbedder:
