@@ -10,9 +10,9 @@ All planned features have been successfully implemented.
 
 ### Core Infrastructure ✅
 
-- ✅ Project structure created
-- ✅ Dependencies configured (`requirements.txt`, `pyproject.toml`)
-- ✅ Virtual environment setup
+- ✅ Project structure created (src layout)
+- ✅ Dependencies configured (`pyproject.toml`, `uv.lock`)
+- ✅ UV package manager integration
 - ✅ Configuration management
 - ✅ Logging system
 
@@ -166,9 +166,10 @@ All planned features have been successfully implemented.
 
 ## 🔧 Technical Stack
 
-- **Language**: Python 3.11+
+- **Language**: Python 3.12+ (3.13 recommended)
+- **Package Manager**: uv
 - **MCP Framework**: FastMCP
-- **Web Scraping**: BeautifulSoup4, lxml
+- **Web Scraping**: BeautifulSoup4, lxml, httpx
 - **Vector Database**: ChromaDB
 - **Embeddings**: sentence-transformers
 - **Scheduler**: APScheduler
@@ -181,44 +182,44 @@ All planned features have been successfully implemented.
 ## 📁 Project Structure
 
 ```
-databricks_docs_mcp/
-├── server.py                 # Main MCP server (✅)
-├── __main__.py              # CLI entry point (✅)
-├── requirements.txt         # Dependencies (✅)
-├── pyproject.toml          # Package config (✅)
-├── start_server.sh         # Startup script (✅)
+databricks-docs-mcp/
+├── src/
+│   └── databricks_docs_mcp/
+│       ├── __init__.py          # Package init
+│       ├── __main__.py          # CLI entry point
+│       ├── server.py            # Main MCP server
+│       │
+│       ├── crawler/             # Crawling module
+│       │   ├── scraper.py       # Web scraper
+│       │   ├── async_scraper.py # Fast async crawler
+│       │   ├── parser.py        # HTML parser
+│       │   └── scheduler.py     # Daily refresh
+│       │
+│       ├── storage/             # Storage module
+│       │   ├── models.py        # Data models
+│       │   └── cache.py         # Cache manager
+│       │
+│       ├── embeddings/          # Search module
+│       │   ├── embedder.py      # Embeddings
+│       │   ├── vector_db.py     # ChromaDB
+│       │   └── search.py        # Semantic search
+│       │
+│       ├── tools/               # MCP tools
+│       │   ├── search.py        # Search tools
+│       │   └── recommend.py     # Recommendations
+│       │
+│       └── resources/           # MCP resources
+│           └── docs_resources.py
 │
-├── crawler/                 # Crawling module (✅)
-│   ├── scraper.py          # Web scraper
-│   ├── parser.py           # HTML parser
-│   └── scheduler.py        # Daily refresh
-│
-├── storage/                 # Storage module (✅)
-│   ├── models.py           # Data models
-│   └── cache.py            # Cache manager
-│
-├── embeddings/              # Search module (✅)
-│   ├── embedder.py         # Embeddings
-│   ├── vector_db.py        # ChromaDB
-│   └── search.py           # Semantic search
-│
-├── tools/                   # MCP tools (✅)
-│   ├── search.py           # Search tools
-│   └── recommend.py        # Recommendations
-│
-├── resources/               # MCP resources (✅)
-│   └── docs_resources.py   # Doc browsing
-│
-├── tests/                   # Test suite (✅)
+├── tests/                       # Test suite
 │   ├── test_parser.py
 │   ├── test_cache.py
 │   └── test_embedder.py
 │
-└── docs/                    # Documentation (✅)
-    ├── README.md
-    ├── QUICKSTART.md
-    ├── USAGE_EXAMPLES.md
-    └── PROJECT_STATUS.md
+├── pyproject.toml               # Project config
+├── uv.lock                      # Locked dependencies
+├── .python-version              # Python version (3.13)
+└── start_server.sh              # Startup script
 ```
 
 ---
@@ -228,8 +229,12 @@ databricks_docs_mcp/
 ### Quick Start
 
 ```bash
-cd databricks_docs_mcp
+cd databricks-docs-mcp
 ./start_server.sh
+
+# Or manually with uv
+uv sync
+uv run python -m databricks_docs_mcp.server
 ```
 
 ### Configure AI IDE

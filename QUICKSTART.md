@@ -4,15 +4,17 @@ Get up and running in 5 minutes!
 
 ## Prerequisites
 
-- Python 3.11 or higher
+- Python 3.12 or higher
+- [uv](https://github.com/astral-sh/uv) (will be installed automatically)
 - 2GB+ RAM
 - 500MB+ disk space
 - Internet connection
 
-## Step 1: Navigate to Project
+## Step 1: Clone and Navigate to Project
 
 ```bash
-cd /Users/cliff.yang/CursorProj/databricks_docs_mcp
+git clone https://github.com/YOUR-USERNAME/databricks-docs-mcp.git
+cd databricks-docs-mcp
 ```
 
 ## Step 2: Start Server
@@ -23,10 +25,9 @@ cd /Users/cliff.yang/CursorProj/databricks_docs_mcp
 
 The script will:
 1. Install **uv** (fast Python package manager) if needed
-2. Create a virtual environment (`.venv`)
-3. Install dependencies with uv (10-100x faster than pip!)
-4. Offer to crawl documentation (first time only)
-5. Start the MCP server on port 8100
+2. Create a virtual environment and install dependencies
+3. Offer to crawl documentation (first time only)
+4. Start the MCP server on port 8100
 
 **Note**: First-time crawl takes 10-30 minutes. You can skip and crawl later.
 
@@ -81,22 +82,30 @@ You should see responses with documentation content, URLs, and relevant informat
 
 ---
 
-## Manual Crawl (If Skipped)
+## Manual Setup (Alternative)
 
-If you skipped the initial crawl, run:
+If you prefer manual control:
 
 ```bash
-python -m databricks_docs_mcp crawl
-```
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-This will take 10-30 minutes depending on your connection.
+# Install dependencies
+uv sync
+
+# Crawl documentation (first time)
+uv run python -m databricks_docs_mcp crawl --fast
+
+# Start server
+uv run python -m databricks_docs_mcp.server --no-scheduler
+```
 
 ---
 
 ## Check Status
 
 ```bash
-python -m databricks_docs_mcp stats
+uv run python -m databricks_docs_mcp stats
 ```
 
 Expected output:
@@ -122,14 +131,14 @@ Expected output:
 lsof -i :8100
 
 # Use different port
-python -m databricks_docs_mcp server --port 8200
+uv run python -m databricks_docs_mcp.server --port 8200
 ```
 
 ### No search results
 
 ```bash
 # Re-index documentation
-python -m databricks_docs_mcp index --clear
+uv run python -m databricks_docs_mcp index --clear
 ```
 
 ### AI IDE not connecting
@@ -160,7 +169,7 @@ Start server:
 
 Stop server:
 ```bash
-pkill -f "python.*server.py"
+pkill -f "databricks_docs_mcp"
 ```
 
 ---
@@ -168,7 +177,7 @@ pkill -f "python.*server.py"
 ## Getting Help
 
 - Check logs: `tail -f docs_mcp_server.log`
-- View stats: `python -m databricks_docs_mcp stats`
+- View stats: `uv run python -m databricks_docs_mcp stats`
 - See examples: `USAGE_EXAMPLES.md`
 
 ---
