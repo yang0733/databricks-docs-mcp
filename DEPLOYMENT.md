@@ -18,17 +18,17 @@ The server will be available at `http://localhost:8100/mcp`
 ### Manual Deployment
 
 ```bash
-# 1. Install dependencies
-uv venv
-source .venv/bin/activate
-uv pip install -r requirements.txt
+# 1. Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 2. Initial crawl
-export PYTHONPATH="$(pwd)/..:$PYTHONPATH"
-python -m databricks_docs_mcp crawl --fast
+# 2. Install dependencies
+uv sync
 
-# 3. Start server
-python server.py --no-scheduler
+# 3. Initial crawl
+uv run python -m databricks_docs_mcp crawl --fast
+
+# 4. Start server
+uv run python -m databricks_docs_mcp.server --no-scheduler
 ```
 
 ## Production Deployment
@@ -38,19 +38,19 @@ python server.py --no-scheduler
 Create `Dockerfile`:
 
 ```dockerfile
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
 # Install uv
 RUN pip install uv
 
-# Copy requirements
-COPY requirements.txt .
-RUN uv pip install --system -r requirements.txt
+# Copy project files
+COPY pyproject.toml uv.lock ./
+COPY src/ ./src/
 
-# Copy application
-COPY . .
+# Install dependencies
+RUN uv sync --no-dev
 
 # Create storage directories
 RUN mkdir -p storage/data/pages storage/chromadb
@@ -59,7 +59,7 @@ RUN mkdir -p storage/data/pages storage/chromadb
 EXPOSE 8100
 
 # Run server
-CMD ["python", "server.py", "--no-scheduler"]
+CMD ["uv", "run", "python", "-m", "databricks_docs_mcp.server", "--no-scheduler"]
 ```
 
 Build and run:
@@ -106,9 +106,8 @@ After=network.target
 [Service]
 Type=simple
 User=your-user
-WorkingDirectory=/path/to/databricks_docs_mcp
-Environment="PYTHONPATH=/path/to/parent/directory"
-ExecStart=/path/to/databricks_docs_mcp/.venv/bin/python server.py --no-scheduler
+WorkingDirectory=/path/to/databricks-docs-mcp
+ExecStart=/path/to/databricks-docs-mcp/.venv/bin/python -m databricks_docs_mcp.server --no-scheduler
 Restart=always
 RestartSec=10
 

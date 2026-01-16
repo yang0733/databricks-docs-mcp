@@ -1,13 +1,14 @@
 # Using UV for Package Management
 
-This project now uses **uv** - a blazingly fast Python package installer and resolver written in Rust.
+This project uses **uv** - a blazingly fast Python package installer and resolver written in Rust.
 
 ## Why UV?
 
 - ⚡ **10-100x faster** than pip
-- 🔒 **Reliable** dependency resolution
+- 🔒 **Reliable** dependency resolution with lock files
 - 🎯 **Simple** commands
 - 🚀 **Modern** Python package management
+- 📦 **All-in-one** tool for Python projects
 
 ## Installation
 
@@ -23,61 +24,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 pip install uv
 ```
 
-## Common Commands
-
-### Setup Project
-
-```bash
-# Create virtual environment
-uv venv
-
-# Activate it
-source .venv/bin/activate  # macOS/Linux
-.venv\Scripts\activate     # Windows
-
-# Install project in editable mode
-uv pip install -e .
-
-# Or install from requirements.txt
-uv pip install -r requirements.txt
-```
-
-### Install Packages
-
-```bash
-# Install a package
-uv pip install fastmcp
-
-# Install with version
-uv pip install "fastmcp>=0.2.0"
-
-# Install development dependencies
-uv pip install -e ".[dev]"
-```
-
-### Manage Dependencies
-
-```bash
-# Show installed packages
-uv pip list
-
-# Show outdated packages
-uv pip list --outdated
-
-# Upgrade all packages
-uv pip install --upgrade -r requirements.txt
-```
-
-### Lock Dependencies
-
-```bash
-# Generate lock file (done automatically)
-uv lock
-
-# Install from lock file
-uv sync
-```
-
 ## Quick Start
 
 The easiest way to get started:
@@ -88,26 +34,86 @@ The easiest way to get started:
 
 This script will:
 1. Install uv if needed
-2. Create `.venv` virtual environment
-3. Install all dependencies
+2. Install all dependencies (creates `.venv` automatically)
+3. Offer to crawl documentation
 4. Start the server
 
-## Manual Setup
+## Common Commands
 
-If you prefer manual control:
+### Install Dependencies
 
 ```bash
-# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# Install all dependencies (creates .venv if needed)
+uv sync
 
-# Create venv and install
-cd databricks_docs_mcp
-uv venv
-source .venv/bin/activate
-uv pip install -e .
+# Install with development dependencies
+uv sync --group dev
 
-# Run server
-python server.py
+# Install with test dependencies
+uv sync --group test
+```
+
+### Run Commands
+
+```bash
+# Run any Python command in the virtual environment
+uv run python -m databricks_docs_mcp.server
+
+# Run tests
+uv run pytest tests/ -v
+
+# Run linting
+uv run ruff check .
+
+# Run formatting
+uv run black .
+```
+
+### Manage Dependencies
+
+```bash
+# Add a new dependency
+uv add package-name
+
+# Add a dev dependency
+uv add --group dev package-name
+
+# Remove a dependency
+uv remove package-name
+
+# Update all dependencies
+uv lock --upgrade
+uv sync
+```
+
+### Lock File
+
+```bash
+# Regenerate lock file
+uv lock
+
+# Install from lock file (reproducible)
+uv sync
+```
+
+## Project Configuration
+
+Dependencies are defined in `pyproject.toml`:
+
+```toml
+[project]
+dependencies = [
+    "fastmcp>=2.14.3",
+    "chromadb>=1.4.0",
+    # ...
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "black>=25.12.0",
+    "ruff>=0.14.11",
+]
 ```
 
 ## Advantages Over pip
@@ -116,6 +122,7 @@ python server.py
 |---------|-----|-----|
 | Speed | ⚡ 10-100x faster | Baseline |
 | Dependency Resolution | ✅ Reliable | ⚠️ Can fail |
+| Lock Files | ✅ Built-in | ❌ Needs pip-tools |
 | Memory Usage | 💚 Low | 📊 Higher |
 | Parallel Downloads | ✅ Yes | ❌ Sequential |
 | Rust-based | ✅ Yes | ❌ Python |
@@ -128,8 +135,8 @@ python server.py
 # Add to PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# Or install globally
-pip install uv
+# Or reinstall
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ### Virtual environment issues
@@ -137,28 +144,37 @@ pip install uv
 ```bash
 # Remove and recreate
 rm -rf .venv
-uv venv
-source .venv/bin/activate
-uv pip install -e .
+uv sync
 ```
 
-### Package conflicts
+### Dependency conflicts
 
 ```bash
 # Clear cache
 uv cache clean
 
-# Reinstall
-uv pip install --force-reinstall -e .
+# Regenerate lock file
+uv lock
+uv sync
+```
+
+### Wrong Python version
+
+```bash
+# Check .python-version file
+cat .python-version
+
+# Install correct Python version with uv
+uv python install 3.13
 ```
 
 ## Learn More
 
-- **UV Docs**: https://github.com/astral-sh/uv
+- **UV Documentation**: https://docs.astral.sh/uv/
+- **UV GitHub**: https://github.com/astral-sh/uv
 - **UV Guide**: https://astral.sh/uv
-- **Rye (Alternative)**: https://rye-up.com/
 
 ---
 
-**Note**: The old `venv/` directory has been removed. We now use `.venv/` (standard convention).
+**Note**: This project uses the `src` layout with `uv.lock` for reproducible builds.
 

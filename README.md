@@ -3,7 +3,7 @@
 > **Make Databricks documentation instantly accessible to AI assistants through the Model Context Protocol (MCP)**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![FastMCP](https://img.shields.io/badge/FastMCP-2.0-green.svg)](https://github.com/jlowin/fastmcp)
 
 > **⚠️ DISCLAIMER**: This is **NOT** an official Databricks product and is **NOT** supported by Databricks. This is a community project that crawls and indexes publicly available Databricks documentation to provide MCP integration. Use at your own risk. For official Databricks support, please contact Databricks directly.
@@ -55,19 +55,14 @@ The server will automatically crawl and index documentation on first run. Grab a
 # Install uv (if not already installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Create virtual environment
-uv venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
-uv pip install -r requirements.txt
+# Install dependencies and create virtual environment
+uv sync --group dev
 
 # Crawl documentation (fast mode) - Takes ~5-7 minutes
-export PYTHONPATH="/path/to/parent/directory:$PYTHONPATH"
-python -m databricks_docs_mcp crawl --fast
+uv run python -m databricks_docs_mcp crawl --fast
 
 # Start MCP server (first start: ~10-15 min for indexing, subsequent: ~5-10 sec)
-python server.py --no-scheduler
+uv run python -m databricks_docs_mcp.server --no-scheduler
 ```
 
 > **💡 Tip**: The `--fast` flag uses the async crawler for 5-10x faster crawling. The server automatically creates embeddings on first startup.

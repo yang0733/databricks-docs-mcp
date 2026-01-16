@@ -31,7 +31,7 @@ If you find a bug or have a feature request:
 4. **Test your changes**
    ```bash
    # Run tests
-   pytest tests/
+   uv run pytest tests/
    
    # Test the server locally
    ./start_server.sh
@@ -66,40 +66,42 @@ Use conventional commits:
    cd databricks-docs-mcp
    ```
 
-2. **Set up Python environment**
+2. **Set up Python environment with uv**
    ```bash
-   # Using uv (recommended)
+   # Install uv (if not already installed)
    curl -LsSf https://astral.sh/uv/install.sh | sh
-   uv venv
-   source .venv/bin/activate
-   uv pip install -r requirements.txt
-   
-   # OR using pip
-   python -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
+
+   # Install dependencies (creates .venv automatically)
+   uv sync --group dev
    ```
 
 3. **Run initial crawl**
    ```bash
-   python -m databricks_docs_mcp crawl --fast --max-pages 100
+   uv run python -m databricks_docs_mcp crawl --fast --max-pages 100
    ```
 
 4. **Start the server**
    ```bash
-   python server.py --no-scheduler
+   uv run python -m databricks_docs_mcp.server --no-scheduler
    ```
 
 ## Project Structure
 
 ```
-databricks_docs_mcp/
-├── crawler/          # Web scraping and parsing
-├── embeddings/       # Vector embeddings and search
-├── resources/        # MCP resources
-├── storage/          # Data models and caching
-├── tools/            # MCP tools
-└── tests/            # Unit tests
+databricks-docs-mcp/
+├── src/
+│   └── databricks_docs_mcp/
+│       ├── __init__.py
+│       ├── __main__.py
+│       ├── server.py
+│       ├── crawler/          # Web scraping and parsing
+│       ├── embeddings/       # Vector embeddings and search
+│       ├── resources/        # MCP resources
+│       ├── storage/          # Data models and caching
+│       └── tools/            # MCP tools
+├── tests/                    # Unit tests
+├── pyproject.toml            # Project configuration
+└── uv.lock                   # Locked dependencies
 ```
 
 ## Code Style
@@ -108,12 +110,21 @@ databricks_docs_mcp/
 - Add docstrings to all public functions/classes
 - Keep functions focused and single-purpose
 - Add comments for complex logic
+- Run `uv run ruff check .` for linting
+- Run `uv run black .` for formatting
 
 ## Testing
 
-- Write unit tests for new features
-- Ensure existing tests pass
-- Test with different documentation sources if possible
+```bash
+# Run all tests
+uv run pytest tests/ -v
+
+# Run with coverage
+uv run pytest tests/ --cov=databricks_docs_mcp
+
+# Run specific test file
+uv run pytest tests/test_cache.py -v
+```
 
 ## Questions?
 

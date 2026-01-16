@@ -48,25 +48,21 @@
 Crawl **ALL 3,329 pages** in ~5-7 minutes:
 
 ```bash
-cd /Users/cliff.yang/CursorProj/databricks_docs_mcp
-source .venv/bin/activate
-export PYTHONPATH="/Users/cliff.yang/CursorProj:$PYTHONPATH"
-
 # Fast async crawl
-python -m databricks_docs_mcp crawl --fast
+uv run python -m databricks_docs_mcp crawl --fast
 ```
 
 ### Custom Configuration
 
 ```bash
 # Increase concurrency (faster but more aggressive)
-python -m databricks_docs_mcp crawl --fast --concurrent 30 --rate-limit 15
+uv run python -m databricks_docs_mcp crawl --fast --concurrent 30 --rate-limit 15
 
 # Conservative (safer for slow connections)
-python -m databricks_docs_mcp crawl --fast --concurrent 10 --rate-limit 5
+uv run python -m databricks_docs_mcp crawl --fast --concurrent 10 --rate-limit 5
 
 # Test with limited pages
-python -m databricks_docs_mcp crawl --fast --max-pages 500
+uv run python -m databricks_docs_mcp crawl --fast --max-pages 500
 ```
 
 ### Traditional Sequential Crawl
@@ -75,7 +71,7 @@ If you need the old behavior:
 
 ```bash
 # Slow but reliable
-python -m databricks_docs_mcp crawl
+uv run python -m databricks_docs_mcp crawl
 ```
 
 ## Parameters
@@ -156,17 +152,17 @@ python -m databricks_docs_mcp crawl
 
 **For production (full crawl):**
 ```bash
-python -m databricks_docs_mcp crawl --fast --concurrent 20 --rate-limit 10
+uv run python -m databricks_docs_mcp crawl --fast --concurrent 20 --rate-limit 10
 ```
 
 **For development/testing:**
 ```bash
-python -m databricks_docs_mcp crawl --fast --max-pages 100 --concurrent 10
+uv run python -m databricks_docs_mcp crawl --fast --max-pages 100 --concurrent 10
 ```
 
 **For slow/unstable connections:**
 ```bash
-python -m databricks_docs_mcp crawl --fast --concurrent 5 --rate-limit 3
+uv run python -m databricks_docs_mcp crawl --fast --concurrent 5 --rate-limit 3
 ```
 
 ### Rate Limiting Guidelines
@@ -216,10 +212,10 @@ The old `DocScraper` is still available for compatibility:
 
 ```bash
 # Old way (still works)
-python -m databricks_docs_mcp crawl
+uv run python -m databricks_docs_mcp crawl
 
 # New way (recommended)
-python -m databricks_docs_mcp crawl --fast
+uv run python -m databricks_docs_mcp crawl --fast
 ```
 
 Both use the same storage format, so you can switch between them.
@@ -230,6 +226,6 @@ Both use the same storage format, so you can switch between them.
 
 ```bash
 # Just do this! 🚀
-python -m databricks_docs_mcp crawl --fast
+uv run python -m databricks_docs_mcp crawl --fast
 ```
 
