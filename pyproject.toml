@@ -3,15 +3,15 @@ name = "databricks-docs-mcp"
 version = "1.0.0"
 description = "MCP Server for Databricks AWS Documentation with semantic search, browsing, and recommendations"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 authors = [
     {name = "Databricks Docs MCP Team"}
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
@@ -61,11 +61,11 @@ python_functions = ["test_*"]
 
 [tool.black]
 line-length = 100
-target-version = ['py311']
+target-version = ['py312', 'py313']
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
 select = ["E", "F", "I", "N", "W", "UP"]
 ignore = ["E501"]
 
