@@ -9,18 +9,12 @@ with open("requirements.txt") as f:
 setup(
     name="databricks-docs-mcp",
     version="1.0.0",
-    packages=find_packages(where="."),
+    packages=["databricks_docs_mcp", "databricks_docs_mcp.crawler", "databricks_docs_mcp.embeddings", "databricks_docs_mcp.storage", "databricks_docs_mcp.tools", "databricks_docs_mcp.resources"],
     package_dir={"databricks_docs_mcp": "."},
-    py_modules=[
-        "__init__",
-        "__main__",
-        "server",
-        "config.example",
-    ],
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "databricks-docs-mcp=__main__:main",
+            "databricks-docs-mcp=databricks_docs_mcp.__main__:main",
         ],
     },
     python_requires=">=3.11",
